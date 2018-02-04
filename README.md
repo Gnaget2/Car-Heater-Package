@@ -32,3 +32,5 @@ Please note that the automation that checks time/temp is started at 02:00 and yo
 - Place Heater.yaml in your package folder
 - Edit Heater.yaml to use the sensor of your choice (or leave it as is to use the YR sensor)
 - Edit Heater.yaml to use the correct  switch that controls your heater (switch.motorvarmaren in the example)
+- Edit Heater.yaml and edit your default leaving time as it will be reset when HASS restarts
+- Restart HASS and start using it.
