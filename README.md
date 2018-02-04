@@ -34,3 +34,11 @@ Please note that the automation that checks time/temp is started at 02:00 and yo
 - Edit Heater.yaml to use the correct  switch that controls your heater (switch.motorvarmaren in the example)
 - Edit Heater.yaml and edit your default leaving time as it will be reset when HASS restarts
 - Restart HASS and start using it.
+
+## Change log
+
+#### 1.0.1
+Small typo fixed in bolean name
+
+#### 1.0
+First release
