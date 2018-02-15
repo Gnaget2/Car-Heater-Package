@@ -1,4 +1,4 @@
-# Car-Heater-Package V 1.0.1
+# Car-Heater-Package V 1.1
 Control your car engine heater with Home Assistant
 
 ## Description
@@ -14,7 +14,8 @@ Designed for and tested with Home Assistant hassio version 0.62.1
 Its created as a [Home Assistant package](https://home-assistant.io/docs/configuration/packages/) and uses yr as temp sensor but its recommended to use a local temp sensor for batter accuracy.
 
 
-In the example im using 3 different starting times
+In the example im using 4 different starting times
+- 180 min when colder then -20 degrees Celsius
 - 120 min when colder then -10 degrees Celsius
 - 60 min when colder then +1 degrees Celsius
 - 30 min when colder then +5 degrees Celsius
@@ -36,6 +37,9 @@ Please note that the automation that checks time/temp is started at 02:00 and yo
 - Restart HASS and start using it.
 
 ## Change log
+
+#### 1.1
+Added a 4th trigger for -20 and colder
 
 #### 1.0.1
 Small typo fixed in bolean name
