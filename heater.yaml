@@ -1,6 +1,6 @@
 ##################################################################################################
 # Car heater package                                                                             #
-# Version 1.0.1 last changed 2018-02-03                                                          #
+# Version 1.1 last changed 2018-02-15                                                            #
 # Created for and tested with Home Assistant Hassio version 0.62.1                               #
 # Creator Mikael Danell SHG                                                                      #
 # Inspiration and code from:                                                                     #
@@ -10,6 +10,55 @@
 
 # Automation section
 automation:
+# triggers 3h before departure time when temp is below -20 and heater status is on, checks if weekend/weekday matches option
+  - alias: "heater minus 20"
+    initial_state: false
+    trigger:
+     - platform: time
+       minutes: '/5'
+       seconds: 2
+    condition:
+      condition: or
+      conditions:
+        - condition: and
+          conditions:
+            - condition: numeric_state
+              entity_id: sensor.yr_temperature
+              below: '-20'
+            - condition: template
+              value_template: '{{ ((now().strftime("%s") | int + 7200 ) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
+            - condition: state
+              entity_id: input_boolean.heaterstatus
+              state: 'on'
+            - condition: state
+              entity_id: input_boolean.heaterweekday
+              state: 'on'
+            - condition: time
+              weekday:
+                - mon
+                - tue
+                - wed
+                - thu
+                - fri
+        - condition: and
+          conditions:
+            - condition: numeric_state
+              entity_id: sensor.yr_temperature
+              below: '-20'
+            - condition: template
+              value_template: '{{ ((now().strftime("%s") | int + 7200 ) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
+            - condition: state
+              entity_id: input_boolean.heaterstatus
+              state: 'on'
+            - condition: state
+              entity_id: input_boolean.heaterweekday
+              state: 'off'
+    action:
+       - service: script.turn_on
+         entity_id: script.heater_on
+       - service: homeassistant.turn_off
+         entity_id: automation.heater_minus_20, automation.heater_minus_10, automation.heater_plus_1, automation.heater_plus_5
+
 # triggers 2h before departure time when temp is below -10 and heater status is on, checks if weekend/weekday matches option
   - alias: "heater minus 10"
     initial_state: false
@@ -57,7 +106,7 @@ automation:
        - service: script.turn_on
          entity_id: script.heater_on
        - service: homeassistant.turn_off
-         entity_id: automation.heater_minus_10, automation.heater_plus_1, automation.heater_plus_5
+         entity_id: automation.heater_minus_20, automation.heater_minus_10, automation.heater_plus_1, automation.heater_plus_5
 
 # triggers 1h before departure time when temp is below 1 and heater status is on, checks if weekend/weekday matches option
   - alias: "heater plus 1"
@@ -106,7 +155,7 @@ automation:
        - service: script.turn_on
          entity_id: script.heater_on
        - service: homeassistant.turn_off
-         entity_id: automation.heater_plus_1, automation.heater_plus_5, automation.heater_minus_10
+         entity_id: automation.heater_minus_20, automation.heater_plus_1, automation.heater_plus_5, automation.heater_minus_10
 
 # triggers 30min before departure time when temp is below 5 and heater status is on, checks if weekend/weekday matches option
   - alias: "heater plus 5"
@@ -155,7 +204,7 @@ automation:
        - service: script.turn_on
          entity_id: script.heater_on
        - service: homeassistant.turn_off
-         entity_id: automation.heater_plus_1, automation.heater_plus_5, automation.heater_minus_10
+         entity_id: automation.heater_minus_20, automation.heater_plus_1, automation.heater_plus_5, automation.heater_minus_10
 
 # activates the automations that will trigger the heater depending on temp if the function is activated
   - alias: "heater enabled"
@@ -169,10 +218,10 @@ automation:
          state: 'on'
     action:
       service: homeassistant.turn_on
-      entity_id: automation.heater_plus_5, automation.heater_plus_1, automation.heater_minus_10
+      entity_id: automation.heater_minus_20, automation.heater_plus_5, automation.heater_plus_1, automation.heater_minus_10
 
 # Turns the heater off when leaving time is reached
-  - alias: "heater ak off"
+  - alias: "heater off"
     initial_state: false
     trigger:
      - platform: time
@@ -254,10 +303,11 @@ group:
       - input_boolean.heaterweekday
 
   heater_controls:
-    name: "styrning"
+    name: "Styrning"
     entities:
       - automation.heater_enabled
       - automation.heater_off
+      - automation.heater_minus_20
       - automation.heater_minus_10
       - automation.heater_plus_1
       - automation.heater_plus_5
