@@ -1,6 +1,6 @@
 ##################################################################################################
 # Car heater package                                                                             #
-# Version 1.1 last changed 2018-02-15                                                            #
+# Version 1.1.1 last changed 2018-02-16                                                          #
 # Created for and tested with Home Assistant Hassio version 0.62.1                               #
 # Creator Mikael Danell SHG                                                                      #
 # Inspiration and code from:                                                                     #
@@ -291,6 +291,7 @@ group:
 #      - group.heater_controls
 
   heater:
+    control: hidden
     name: "Motorvärmare"
     entities:
       - sensor.departuretime
