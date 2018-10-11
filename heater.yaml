@@ -1,6 +1,6 @@
 ##################################################################################################
 # Car heater package                                                                             #
-# Version 1.1.1 last changed 2018-02-16                                                          #
+# Version 1.1.2 last changed 2018-10-11                                                          #
 # Created for and tested with Home Assistant Hassio version 0.62.1                               #
 # Creator Mikael Danell SHG                                                                      #
 # Inspiration and code from:                                                                     #
@@ -171,7 +171,7 @@ automation:
           conditions:
             - condition: numeric_state
               entity_id: sensor.yr_temperature
-              below: '1'
+              below: '5'
             - condition: template
               value_template: '{{ ((now().strftime("%s") | int - 1800) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
             - condition: state
@@ -191,7 +191,7 @@ automation:
           conditions:
             - condition: numeric_state
               entity_id: sensor.yr_temperature
-              below: '1'
+              below: '5'
             - condition: template
               value_template: '{{ ((now().strftime("%s") | int - 1800) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
             - condition: state
