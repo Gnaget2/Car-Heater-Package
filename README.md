@@ -1,4 +1,4 @@
-# Car-Heater-Package V 1.1.1
+# Car-Heater-Package V 1.1.2
 Control your car engine heater with Home Assistant
 
 ## Description
@@ -37,6 +37,9 @@ Please note that the automation that checks time/temp is started at 02:00 and yo
 - Restart HASS and start using it.
 
 ## Change log
+
+#### 1.1.2
+corected temp codition on "below 5" [issue #1](https://github.com/Gnaget2/Car-Heater-Package/issues/1)
 
 #### 1.1.1
 removed main group switch/control
