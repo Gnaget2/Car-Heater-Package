@@ -1,7 +1,7 @@
 ##################################################################################################
 # Car heater package                                                                             #
-# Version 1.1.2 last changed 2018-10-11                                                          #
-# Created for and tested with Home Assistant Hassio version 0.62.1                               #
+# Version 1.1.3 last changed 2019-02-03                                                          #
+# Created for and tested with Home Assistant Hassio version 0.86.4                               #
 # Creator Mikael Danell SHG                                                                      #
 # Inspiration and code from:                                                                     #
 # https://github.com/Danielhiversen/home-assistant_config/blob/master/packages/alarm_clock.yaml  #
@@ -14,7 +14,7 @@ automation:
   - alias: "heater minus 20"
     initial_state: false
     trigger:
-     - platform: time
+     - platform: time_pattern
        minutes: '/5'
        seconds: 2
     condition:
@@ -63,7 +63,7 @@ automation:
   - alias: "heater minus 10"
     initial_state: false
     trigger:
-     - platform: time
+     - platform: time_pattern
        minutes: '/5'
        seconds: 2
     condition:
@@ -112,7 +112,7 @@ automation:
   - alias: "heater plus 1"
     initial_state: false
     trigger:
-     - platform: time
+     - platform: time_pattern
        minutes: '/5'
        seconds: 2
     condition:
@@ -161,7 +161,7 @@ automation:
   - alias: "heater plus 5"
     initial_state: false
     trigger:
-     - platform: time
+     - platform: time_pattern
        minutes: '/5'
        seconds: 2
     condition:
@@ -224,7 +224,7 @@ automation:
   - alias: "heater off"
     initial_state: false
     trigger:
-     - platform: time
+     - platform: time_pattern
        minutes: '/5'
        seconds: 2
     condition:
