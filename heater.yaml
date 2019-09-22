@@ -23,7 +23,7 @@ automation:
         - condition: and
           conditions:
             - condition: numeric_state
-              entity_id: sensor.yr_temperature
+              entity_id: sensor.heater_outside_temp
               below: '-20'
             - condition: template
               value_template: '{{ ((as_timestamp(now()) | int + 10800 ) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
@@ -43,7 +43,7 @@ automation:
         - condition: and
           conditions:
             - condition: numeric_state
-              entity_id: sensor.yr_temperature
+              entity_id: sensor.heater_outside_temp
               below: '-20'
             - condition: template
               value_template: '{{ ((as_timestamp(now()) | int + 10800 ) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
@@ -72,7 +72,7 @@ automation:
         - condition: and
           conditions:
             - condition: numeric_state
-              entity_id: sensor.yr_temperature
+              entity_id: sensor.heater_outside_temp
               below: '-10'
             - condition: template
               value_template: '{{ ((as_timestamp(now()) | int + 7200 ) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
@@ -92,7 +92,7 @@ automation:
         - condition: and
           conditions:
             - condition: numeric_state
-              entity_id: sensor.yr_temperature
+              entity_id: sensor.heater_outside_temp
               below: '-10'
             - condition: template
               value_template: '{{ ((as_timestamp(now()) | int + 7200 ) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
@@ -121,7 +121,7 @@ automation:
         - condition: and
           conditions:
             - condition: numeric_state
-              entity_id: sensor.yr_temperature
+              entity_id: sensor.heater_outside_temp
               below: '1'
             - condition: template
               value_template: '{{ ((as_timestamp(now()) | int + 3600 ) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
@@ -141,7 +141,7 @@ automation:
         - condition: and
           conditions:
             - condition: numeric_state
-              entity_id: sensor.yr_temperature
+              entity_id: sensor.heater_outside_temp
               below: '1'
             - condition: template
               value_template: '{{ ((as_timestamp(now()) | int + 3600) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
@@ -170,7 +170,7 @@ automation:
         - condition: and
           conditions:
             - condition: numeric_state
-              entity_id: sensor.yr_temperature
+              entity_id: sensor.heater_outside_temp
               below: '5'
             - condition: template
               value_template: '{{ ((as_timestamp(now()) | int + 1800) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
@@ -190,7 +190,7 @@ automation:
         - condition: and
           conditions:
             - condition: numeric_state
-              entity_id: sensor.yr_temperature
+              entity_id: sensor.heater_outside_temp
               below: '5'
             - condition: template
               value_template: '{{ ((as_timestamp(now()) | int + 1800) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
@@ -276,6 +276,14 @@ sensor:
         friendly_name: 'Avresetid'
         value_template: '{% if states.input_number.heater_hour.state|round(0)|string|length == 1 %}0{% endif %}{{ states.input_number.heater_hour.state|round(0)|string }}:{% if states.input_number.heater_minutes.state|round(0)|string|length == 1 %}0{% endif %}{{ states.input_number.heater_minutes.state|round(0)|string }}'
 
+############ Outside sensor config ############ 
+  - platform: template
+    sensors:
+      heater_outside_temp:
+        friendly_name: 'Utomhus temperature'
+        value_template: "{{ states('sensor.yr_temperature') }}"  ## Change to local temperature source
+################################################ 
+
 # Group section
 group:
 
@@ -296,7 +304,7 @@ group:
 #      - sensor.heater_start_time
       - input_number.heater_hour
       - input_number.heater_minutes
-      - sensor.yr_temperature
+      - sensor.heater_outside_temp
       - switch.motorvarmaren
       - input_boolean.heaterstatus
       - input_boolean.heaterweekday
@@ -321,3 +329,4 @@ script:
       entity_id: switch.motorvarmaren
     - service: automation.turn_on
       entity_id: automation.heater_off
+        
