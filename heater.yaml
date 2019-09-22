@@ -26,7 +26,7 @@ automation:
               entity_id: sensor.yr_temperature
               below: '-20'
             - condition: template
-              value_template: '{{ ((now().strftime("%s") | int + 7200 ) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
+              value_template: '{{ ((as_timestamp(now()) | int + 10800 ) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
             - condition: state
               entity_id: input_boolean.heaterstatus
               state: 'on'
@@ -46,7 +46,7 @@ automation:
               entity_id: sensor.yr_temperature
               below: '-20'
             - condition: template
-              value_template: '{{ ((now().strftime("%s") | int + 7200 ) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
+              value_template: '{{ ((as_timestamp(now()) | int + 10800 ) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
             - condition: state
               entity_id: input_boolean.heaterstatus
               state: 'on'
@@ -75,7 +75,7 @@ automation:
               entity_id: sensor.yr_temperature
               below: '-10'
             - condition: template
-              value_template: '{{ ((now().strftime("%s") | int + 3600 ) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
+              value_template: '{{ ((as_timestamp(now()) | int + 7200 ) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
             - condition: state
               entity_id: input_boolean.heaterstatus
               state: 'on'
@@ -95,7 +95,7 @@ automation:
               entity_id: sensor.yr_temperature
               below: '-10'
             - condition: template
-              value_template: '{{ ((now().strftime("%s") | int + 3600 ) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
+              value_template: '{{ ((as_timestamp(now()) | int + 7200 ) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
             - condition: state
               entity_id: input_boolean.heaterstatus
               state: 'on'
@@ -124,7 +124,7 @@ automation:
               entity_id: sensor.yr_temperature
               below: '1'
             - condition: template
-              value_template: '{{ ((now().strftime("%s") | int ) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
+              value_template: '{{ ((as_timestamp(now()) | int + 3600 ) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
             - condition: state
               entity_id: input_boolean.heaterstatus
               state: 'on'
@@ -144,7 +144,7 @@ automation:
               entity_id: sensor.yr_temperature
               below: '1'
             - condition: template
-              value_template: '{{ ((now().strftime("%s") | int ) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
+              value_template: '{{ ((as_timestamp(now()) | int + 3600) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
             - condition: state
               entity_id: input_boolean.heaterstatus
               state: 'on'
@@ -155,7 +155,7 @@ automation:
        - service: script.turn_on
          entity_id: script.heater_on
        - service: homeassistant.turn_off
-         entity_id: automation.heater_minus_20, automation.heater_plus_1, automation.heater_plus_5, automation.heater_minus_10
+         entity_id: automation.heater_minus_20, automation.heater_minus_10, automation.heater_plus_1, automation.heater_plus_5
 
 # triggers 30min before departure time when temp is below 5 and heater status is on, checks if weekend/weekday matches option
   - alias: "heater plus 5"
@@ -173,7 +173,7 @@ automation:
               entity_id: sensor.yr_temperature
               below: '5'
             - condition: template
-              value_template: '{{ ((now().strftime("%s") | int - 1800) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
+              value_template: '{{ ((as_timestamp(now()) | int + 1800) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
             - condition: state
               entity_id: input_boolean.heaterstatus
               state: 'on'
@@ -193,7 +193,7 @@ automation:
               entity_id: sensor.yr_temperature
               below: '5'
             - condition: template
-              value_template: '{{ ((now().strftime("%s") | int - 1800) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
+              value_template: '{{ ((as_timestamp(now()) | int + 1800) | timestamp_custom("%H:%M")) == states.sensor.departuretime.state  }}'
             - condition: state
               entity_id: input_boolean.heaterstatus
               state: 'on'
@@ -204,7 +204,7 @@ automation:
        - service: script.turn_on
          entity_id: script.heater_on
        - service: homeassistant.turn_off
-         entity_id: automation.heater_minus_20, automation.heater_plus_1, automation.heater_plus_5, automation.heater_minus_10
+         entity_id: automation.heater_minus_20, automation.heater_minus_10, automation.heater_plus_1, automation.heater_plus_5
 
 # activates the automations that will trigger the heater depending on temp if the function is activated
   - alias: "heater enabled"
@@ -218,7 +218,7 @@ automation:
          state: 'on'
     action:
       service: homeassistant.turn_on
-      entity_id: automation.heater_minus_20, automation.heater_plus_5, automation.heater_plus_1, automation.heater_minus_10
+      entity_id: automation.heater_minus_20, automation.heater_minus_10, automation.heater_plus_1, automation.heater_plus_5
 
 # Turns the heater off when leaving time is reached
   - alias: "heater off"
