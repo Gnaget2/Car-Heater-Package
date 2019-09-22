@@ -293,7 +293,7 @@ group:
     name: "Motorvärmare"
     entities:
       - sensor.departuretime
-      - sensor.heater_start_time
+#      - sensor.heater_start_time
       - input_number.heater_hour
       - input_number.heater_minutes
       - sensor.yr_temperature
