@@ -229,7 +229,7 @@ automation:
        seconds: 2
     condition:
       - condition: template
-        value_template: '{{ now().hour == (states.input_number.heater_hour.state  | round(0))  and  now().minute == (states.input_number.heater_minutes.state  | round(0) )  }}'
+        value_template: "{{ ((as_timestamp(now()) | int | timestamp_custom('%H:%M')) == states('sensor.engineheaterofftime')) }}"
     action:
        - service: homeassistant.turn_off
          entity_id: automation.heater_off
@@ -275,12 +275,20 @@ sensor:
       departuretime:
         friendly_name: 'Avresetid'
         value_template: '{% if states.input_number.heater_hour.state|round(0)|string|length == 1 %}0{% endif %}{{ states.input_number.heater_hour.state|round(0)|string }}:{% if states.input_number.heater_minutes.state|round(0)|string|length == 1 %}0{% endif %}{{ states.input_number.heater_minutes.state|round(0)|string }}'
+        
+# Create our stop time 30 minutes past the departure time, this give 
+# us some headroom so the car is still hot even if we are late
+  - platform: template
+    sensors:
+      engineheaterofftime:
+        friendly_name: 'Avtid'
+        value_template: "{{ (states('input_number.heater_hour') | int * 3600 + states('input_number.heater_minutes') | int * 60 + 1800) | timestamp_custom('%H:%M', false) }}"
 
 ############ Outside sensor config ############ 
   - platform: template
     sensors:
       heater_outside_temp:
-        friendly_name: 'Utomhus temperature'
+        friendly_name: 'Utomhus temperatur'
         value_template: "{{ states('sensor.yr_temperature') }}"  ## Change to local temperature source
 ################################################ 
 
